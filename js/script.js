@@ -103,4 +103,28 @@ const tabs = document.querySelectorAll('.tabheader__item'),
 			}
 		}
  setClock('.timer', deadline);
+
+
+// Модальное окно
+
+		const buttonsOpenModal = document.querySelectorAll('[data-modal]');
+		const modal = document.querySelector('.modal');
+		const closeModalBtn = document.querySelector('[data-close]');
+		buttonsOpenModal.forEach(i => {
+			i.addEventListener('click', openModal);
+		});
+
+
+		function openModal(e) {
+			document.body.style.overflow = 'hidden';
+			modal.style.display = 'block';
+			window.addEventListener('click', (e)=> {
+				if(window.getComputedStyle(modal).display == 'block' && e.target == modal){
+					modal.style.display = 'none'
+				}});
+			closeModalBtn.addEventListener('click', ()=> {
+					modal.style.display = 'none';
+					document.body.style.overflow = 'scroll';
+				})
+		}
 });
