@@ -114,17 +114,27 @@ const tabs = document.querySelectorAll('.tabheader__item'),
 			i.addEventListener('click', openModal);
 		});
 
+		function closeModal() {
+			modal.style.display = 'none';
+			document.body.style.overflow = 'scroll';
+		}
 
-		function openModal(e) {
+		function openModal() {
 			document.body.style.overflow = 'hidden';
 			modal.style.display = 'block';
+			
 			window.addEventListener('click', (e)=> {
 				if(window.getComputedStyle(modal).display == 'block' && e.target == modal){
-					modal.style.display = 'none'
-				}});
-			closeModalBtn.addEventListener('click', ()=> {
 					modal.style.display = 'none';
-					document.body.style.overflow = 'scroll';
-				})
+				}});
+		
+				closeModalBtn.addEventListener('click', closeModal);
+			
+			
+				window.addEventListener('keydown', (e) => {
+					if(e.code == 'Escape'){
+					closeModal();
+					}
+					})
 		}
 });
