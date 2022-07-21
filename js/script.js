@@ -158,16 +158,17 @@ const tabs = document.querySelectorAll('.tabheader__item'),
 		
 		
 		class ItemsProduct {
-			constructor(photo, title, text, price) {
+			constructor(photo, title, text, price, ...classes) {
 				this.photo = photo;
 				this.title = title;
 				this.text = text;
 				this.price = price;
+				this.classes = classes;
 			}
 
 		createHTML(parent) {
 			const item = document.createElement('div');
-			item.classList.add('menu__item');
+			this.classes.forEach(className => item.classList.add(className));
 			item.innerHTML = `
 			<img src=${this.photo} alt="vegy">
 			<h3 class="menu__item-subtitle">${this.title}"</h3>
@@ -180,12 +181,14 @@ const tabs = document.querySelectorAll('.tabheader__item'),
 		parent.insertAdjacentElement('beforeend', item);
 			}
 		}
-		const tomatos = new ItemsProduct(
+		new ItemsProduct(
 			'img/tabs/vegy.jpg', 
 			'Здоровье',
 			 'Хочешь быть здоровым, пей корову',
-			  250);
-		tomatos.createHTML(par);
-		const papricos = new ItemsProduct('img/tabs/vegy.jpg', 'Здоровье', 'Хочешь быть здоровым, пей корову', 250);
-		papricos.createHTML(par);
+			  250, 'menu__item').createHTML(par);
+
+		new ItemsProduct('img/tabs/vegy.jpg', 
+			'Здоровье', 
+			'Хочешь быть здоровым, пей корову',
+			 250, 'menu__item').createHTML(par);
 });
