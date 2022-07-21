@@ -1,6 +1,7 @@
 window.addEventListener('DOMContentLoaded', () => {
-//  Tabs
 
+
+	//  Tabs
 
 const tabs = document.querySelectorAll('.tabheader__item'),
 		tabsContent = document.querySelectorAll('.tabcontent'),
@@ -119,6 +120,7 @@ const tabs = document.querySelectorAll('.tabheader__item'),
 			document.body.style.overflow = 'scroll';
 		}
 
+			// Таймаут модального окна
 		const modalInterval = setTimeout(openModal, 10000);
 
 		function openModal() {
@@ -129,7 +131,7 @@ const tabs = document.querySelectorAll('.tabheader__item'),
 			
 			window.addEventListener('click', (e)=> {
 				if(window.getComputedStyle(modal).display == 'block' && e.target == modal){
-					modal.style.display = 'none';
+					closeModal();
 				}});
 		
 				closeModalBtn.addEventListener('click', closeModal);
@@ -142,10 +144,48 @@ const tabs = document.querySelectorAll('.tabheader__item'),
 					})
 		}
 		console.log(scrollY)
+
+		// Scroll Open Modal
 		window.addEventListener('scroll', checkScroll);
 		function checkScroll() {
 			if(scrollY > 3000){
 				openModal();
 			}
 		};
+
+		// Конструктор айтемов
+		const par = document.querySelector('.menu__field .container')
+		
+		
+		class ItemsProduct {
+			constructor(photo, title, text, price) {
+				this.photo = photo;
+				this.title = title;
+				this.text = text;
+				this.price = price;
+			}
+
+		createHTML(parent) {
+			const item = document.createElement('div');
+			item.classList.add('menu__item');
+			item.innerHTML = `
+			<img src=${this.photo} alt="vegy">
+			<h3 class="menu__item-subtitle">${this.title}"</h3>
+			<div class="menu__item-descr">${this.text}</div>
+			<div class="menu__item-divider"></div>
+			<div class="menu__item-price">
+				<div class="menu__item-cost">Цена:</div>
+				<div class="menu__item-total"><span>${this.price}</span> грн/день</div>
+			</div>`
+		parent.insertAdjacentElement('beforeend', item);
+			}
+		}
+		const tomatos = new ItemsProduct(
+			'img/tabs/vegy.jpg', 
+			'Здоровье',
+			 'Хочешь быть здоровым, пей корову',
+			  250);
+		tomatos.createHTML(par);
+		const papricos = new ItemsProduct('img/tabs/vegy.jpg', 'Здоровье', 'Хочешь быть здоровым, пей корову', 250);
+		papricos.createHTML(par);
 });
