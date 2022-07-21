@@ -119,9 +119,13 @@ const tabs = document.querySelectorAll('.tabheader__item'),
 			document.body.style.overflow = 'scroll';
 		}
 
+		const modalInterval = setTimeout(openModal, 10000);
+
 		function openModal() {
 			document.body.style.overflow = 'hidden';
 			modal.style.display = 'block';
+			window.removeEventListener('scroll', checkScroll);
+			clearInterval(modalInterval);
 			
 			window.addEventListener('click', (e)=> {
 				if(window.getComputedStyle(modal).display == 'block' && e.target == modal){
@@ -132,9 +136,16 @@ const tabs = document.querySelectorAll('.tabheader__item'),
 			
 			
 				window.addEventListener('keydown', (e) => {
-					if(e.code == 'Escape'){
+					if(e.code == 'Escape' && window.getComputedStyle(modal).display == 'block'){
 					closeModal();
 					}
 					})
 		}
+		console.log(scrollY)
+		window.addEventListener('scroll', checkScroll);
+		function checkScroll() {
+			if(scrollY > 3000){
+				openModal();
+			}
+		};
 });
