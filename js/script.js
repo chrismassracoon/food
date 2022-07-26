@@ -456,8 +456,19 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
 	const spanCalc = document.querySelector('.calculating__result span');
-	let sex = 'male', heigth, weigth, age, ratio = '1.375';
+	let sex, heigth, weigth, age, ratio = '1.375';
 
+	if (localStorage.getItem('sex')) {
+		sex = localStorage.getItem('sex');
+	} else {
+		sex = 'male';
+	}
+
+	if (localStorage.getItem('ratio')) {
+		ratio = localStorage.getItem('ratio');
+	} else {
+		ratio = 1.375;
+	}
 
 	function calcTotal() {
 		if (!sex || !heigth || !weigth || !age || !ratio) {
@@ -474,6 +485,23 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	calcTotal();
 
+	function initLocalSettings(selector, activeClass) {
+		const elements = document.querySelectorAll(selector);
+
+		elements.forEach(elem => {
+			elem.classList.remove(activeClass);
+			if (elem.getAttribute('id') === localStorage.getItem('sex')) {
+				elem.classList.add(activeClass);
+			}
+			if (elem.getAttribute('data-ratio') === localStorage.getItem('ratio')) {
+				elem.classList.add(activeClass);
+			}
+		});
+	}
+
+	initLocalSettings('#gender div', 'calculating__choose-item_active');
+	initLocalSettings('.calculating__choose_big div', 'calculating__choose-item_active');
+
 
 	function getStaticInform(parentSelector, activeClass) {
 		const elements = document.querySelectorAll(`${parentSelector} div`);
@@ -482,8 +510,10 @@ window.addEventListener('DOMContentLoaded', () => {
 			i.addEventListener('click', (e) => {
 				if (e.target.getAttribute('data-ratio')) {
 					ratio = +e.target.getAttribute('data-ratio');
+					localStorage.setItem('ratio', +e.target.getAttribute('data-ratio'));
 				} else {
 					sex = e.target.id;
+					localStorage.setItem('sex', e.target.id)
 				}
 
 				console.log(ratio, sex);
@@ -502,7 +532,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	function getDynamicInformation(selector) {
 		const input = document.querySelector(selector);
+
 		input.addEventListener('input', () => {
+			if (input.value.match(/\D/g)) {
+				input.style.border = '1px solid red';
+			} else {
+				input.style.border = 'none';
+			}
 			switch (input.id) {
 				case 'height':
 					heigth = +input.value;
